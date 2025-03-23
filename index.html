@@ -51,7 +51,7 @@
         #status {
             margin-top: 10px;
             font-size: 14px;
-            color: #ff0000; /* Cambié el color a rojo para errores */
+            color: #ff0000; /* Color rojo para errores */
         }
         #generatedUrl {
             margin-top: 10px;
@@ -102,6 +102,13 @@
             try {
                 let serverResponse = await fetch("https://api.gofile.io/getServer");
                 let serverData = await serverResponse.json();
+                
+                // Comprobación del estado del servidor
+                if (!serverData || serverData.status !== "ok") {
+                    statusText.innerHTML = "Error al obtener el servidor. " + (serverData.message || "Error desconocido.");
+                    return;
+                }
+                
                 let server = serverData.data.server;
 
                 let uploadResponse = await fetch(`https://${server}.gofile.io/uploadFile`, {
