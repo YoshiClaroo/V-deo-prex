@@ -51,7 +51,7 @@
         #status {
             margin-top: 10px;
             font-size: 14px;
-            color: #00ff99;
+            color: #ff0000; /* Cambié el color a rojo para errores */
         }
         #generatedUrl {
             margin-top: 10px;
@@ -84,13 +84,13 @@
             const statusText = document.getElementById("status");
 
             if (fileInput.files.length === 0) {
-                alert("Selecciona un archivo .mp4.");
+                statusText.innerHTML = "Selecciona un archivo .mp4.";
                 return;
             }
 
             const file = fileInput.files[0];
             if (file.type !== "video/mp4") {
-                alert("Solo se permiten archivos .mp4.");
+                statusText.innerHTML = "Solo se permiten archivos .mp4.";
                 return;
             }
 
@@ -117,11 +117,11 @@
                     statusText.innerHTML = "¡Subida exitosa!";
                 } else {
                     // Mostrar el mensaje de error recibido
-                    statusText.innerHTML = "Error al subir el video: " + uploadData.message;
+                    statusText.innerHTML = "Error al subir el video: " + (uploadData.message || "Error desconocido");
                 }
             } catch (error) {
                 console.error("Error:", error);
-                statusText.innerHTML = "Hubo un problema al subir el video.";
+                statusText.innerHTML = "Hubo un problema al subir el video: " + error.message;
             }
         }
 
@@ -135,7 +135,6 @@
         }
 
         function generatePopunderUrl(videoUrl) {
-            // Genera una URL para abrir el video con el popunder
             const popunderUrl = `https://videoprexview.netlify.app/?url=${encodeURIComponent(videoUrl)}`;
             document.getElementById("generatedUrl").innerHTML = `URL Generada: <a href="${popunderUrl}" target="_blank">${popunderUrl}</a>`;
             document.getElementById("generatedUrl").style.display = "block";
