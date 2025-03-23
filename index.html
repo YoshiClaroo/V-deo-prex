@@ -77,8 +77,6 @@
     </div>
 
     <script>
-        const API_KEY = "TLz50sfoqZ0HPOh2mjeZm0NiVTm2p7ru";
-
         async function uploadFile() {
             const fileInput = document.getElementById("fileInput");
             const statusText = document.getElementById("status");
@@ -100,26 +98,15 @@
             formData.append("file", file);
 
             try {
-                let serverResponse = await fetch("https://api.gofile.io/getServer");
-                let serverData = await serverResponse.json();
-                
-                // Comprobación del estado del servidor
-                if (!serverData || serverData.status !== "ok") {
-                    statusText.innerHTML = "Error al obtener el servidor. " + (serverData.message || "Error desconocido.");
-                    return;
-                }
-                
-                let server = serverData.data.server;
-
-                let uploadResponse = await fetch(`https://${server}.gofile.io/uploadFile`, {
+                let uploadResponse = await fetch("https://file.io/", {
                     method: "POST",
                     body: formData
                 });
 
                 let uploadData = await uploadResponse.json();
 
-                if (uploadData.status === "ok") {
-                    let videoUrl = uploadData.data.downloadPage;
+                if (uploadData.success) {
+                    let videoUrl = uploadData.link; // URL del video
                     generatePopunderUrl(videoUrl);
                     statusText.innerHTML = "¡Subida exitosa!";
                 } else {
